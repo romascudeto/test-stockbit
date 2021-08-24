@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	"soal2/helper"
+	"soal2/models"
 	"soal2/services"
 	"strings"
 
@@ -10,9 +11,16 @@ import (
 )
 
 func Search(c echo.Context) error {
+	var respCh = make(chan models.Search)
 	searchword := c.QueryParam("searchword")
 	pagination := c.QueryParam("pagination")
-	resp := services.Search(searchword, pagination)
+	go services.Search(searchword, pagination, respCh)
+
+	var resp models.Search
+	for respFor := range respCh {
+		resp = respFor
+	}
+
 	if len(resp.Search) == 0 {
 		respErr := helper.ResponseError("Data not found !")
 		return c.JSON(http.StatusOK, respErr)
@@ -22,8 +30,15 @@ func Search(c echo.Context) error {
 }
 
 func DetailID(c echo.Context) error {
+	var respCh = make(chan models.Movie)
 	idMovie := c.QueryParam("idMovie")
-	resp := services.DetailMovieByID(idMovie)
+	go services.DetailMovieByID(idMovie, respCh)
+
+	var resp models.Movie
+	for respFor := range respCh {
+		resp = respFor
+	}
+
 	if resp.Actors == "" {
 		respErr := helper.ResponseError("Data not found !")
 		return c.JSON(http.StatusOK, respErr)
@@ -33,9 +48,15 @@ func DetailID(c echo.Context) error {
 }
 
 func DetailTitle(c echo.Context) error {
+	var respCh = make(chan models.Movie)
 	titleMovieParam := c.QueryParam("titleMovie")
 	titleMovie := strings.ReplaceAll(titleMovieParam, " ", "+")
-	resp := services.DetailMovieByTitle(titleMovie)
+	go services.DetailMovieByTitle(titleMovie, respCh)
+
+	var resp models.Movie
+	for respFor := range respCh {
+		resp = respFor
+	}
 	if resp.Actors == "" {
 		respErr := helper.ResponseError("Data not found !")
 		return c.JSON(http.StatusOK, respErr)
