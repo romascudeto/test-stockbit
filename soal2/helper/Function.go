@@ -18,12 +18,22 @@ func Search(searchword string, pagination string) models.Search {
 	return searchMovie
 }
 
-func DetailMovie(idMovie string) models.Movie {
+func DetailMovieByID(idMovie string) models.Movie {
 	client := resty.New()
 	var movie models.Movie
 	resp, _ := client.R().
 		EnableTrace().
 		Get("http://www.omdbapi.com/?apikey=" + os.Getenv("API_KEY") + "&i=" + idMovie)
+	json.Unmarshal(resp.Body(), &movie)
+	return movie
+}
+
+func DetailMovieByTitle(idMovie string) models.Movie {
+	client := resty.New()
+	var movie models.Movie
+	resp, _ := client.R().
+		EnableTrace().
+		Get("http://www.omdbapi.com/?apikey=" + os.Getenv("API_KEY") + "&t=" + idMovie)
 	json.Unmarshal(resp.Body(), &movie)
 	return movie
 }
