@@ -5,16 +5,19 @@ import (
 	"log"
 )
 
-func ResponseSuccess(meta interface{}, data interface{}) map[string]interface{} {
+func ResponseSuccess(message string, data interface{}) map[string]interface{} {
 	return map[string]interface{}{
-		"meta": meta,
-		"data": data,
+		"success": true,
+		"message": message,
+		"data":    data,
 	}
 }
 
-func ResponseError(data interface{}) map[string]interface{} {
+func ResponseError(message string) map[string]interface{} {
 	return map[string]interface{}{
-		"error": data,
+		"success": false,
+		"message": message,
+		"data":    map[string]interface{}{},
 	}
 }
 
