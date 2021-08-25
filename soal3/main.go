@@ -1,32 +1,36 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"strings"
 )
 
-func findFirstStringInBracket(str string) string {
-	if len(str) > 0 {
-		indexFirstBracketFound := strings.Index(str, "(")
-		if indexFirstBracketFound >= 0 {
-			runes := []rune(str)
-			wordsAfterFirstBracket := string(runes[indexFirstBracketFound:len(str)])
-			indexClosingBracketFound := strings.Index(wordsAfterFirstBracket, ")")
-			if indexClosingBracketFound >= 0 {
-				runes := []rune(wordsAfterFirstBracket)
-				return string(runes[1 : indexClosingBracketFound-1])
-			} else {
-				return ""
-			}
-		} else {
-			return ""
+// this function to find all string inside the bracket
+func findAllStringInBracket(str string) string {
+	indexOpen := strings.Index(str, "(")
+	if indexOpen >= 0 {
+		indexClose := strings.Index(str, ")")
+		if indexClose >= 0 {
+			return str[indexOpen+1 : indexClose]
 		}
-	} else {
-		return ""
+	}
+	return ""
+}
+
+// this function to find first string inside the bracket
+func findFirstStringInBracket(str string) string {
+	indexOpen := strings.Index(str, "(")
+	if indexOpen >= 0 {
+		indexClose := strings.Index(str, ")")
+		firstSpace := strings.Index(str, " ")
+		if indexClose >= 0 {
+			return str[indexOpen+1 : firstSpace]
+		}
 	}
 	return ""
 }
 
 func main() {
-	log.Println(findFirstStringInBracket("(alvin)"))
+	fmt.Println(findAllStringInBracket("(alvin lesmana)"))
+	fmt.Println(findFirstStringInBracket("(alvin lesmana)"))
 }
