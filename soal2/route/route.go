@@ -1,4 +1,4 @@
-package config
+package route
 
 import (
 	"soal2/controllers"
