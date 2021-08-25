@@ -4,6 +4,7 @@ type Search struct {
 	Search       []MovieSearch `json:"search"`
 	TotalResults string        `json:"totalResults"`
 	Response     string        `json:"response"`
+	Error        string        `json:"error"`
 }
 
 type MovieSearch struct {

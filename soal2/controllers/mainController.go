@@ -21,6 +21,10 @@ func Search(c echo.Context) error {
 		resp = respFor
 	}
 
+	if resp.Response == "False" {
+		respErr := helper.ResponseError(resp.Error)
+		return c.JSON(http.StatusBadGateway, respErr)
+	}
 	if len(resp.Search) == 0 {
 		respErr := helper.ResponseError("Data not found !")
 		return c.JSON(http.StatusOK, respErr)
@@ -39,9 +43,13 @@ func DetailID(c echo.Context) error {
 		resp = respFor
 	}
 
+	if resp.Response == "False" {
+		respErr := helper.ResponseError(resp.Error)
+		return c.JSON(http.StatusBadGateway, respErr)
+	}
 	if resp.Actors == "" {
 		respErr := helper.ResponseError("Data not found !")
-		return c.JSON(http.StatusOK, respErr)
+		return c.JSON(http.StatusNotFound, respErr)
 	}
 	respSucc := helper.ResponseSuccess("Data "+idMovie+" fetch successfully", resp)
 	return c.JSON(http.StatusOK, respSucc)
@@ -57,9 +65,13 @@ func DetailTitle(c echo.Context) error {
 	for respFor := range respCh {
 		resp = respFor
 	}
+	if resp.Response == "False" {
+		respErr := helper.ResponseError(resp.Error)
+		return c.JSON(http.StatusBadGateway, respErr)
+	}
 	if resp.Actors == "" {
 		respErr := helper.ResponseError("Data not found !")
-		return c.JSON(http.StatusOK, respErr)
+		return c.JSON(http.StatusNotFound, respErr)
 	}
 	respSucc := helper.ResponseSuccess("Data "+titleMovieParam+" fetch successfully", resp)
 	return c.JSON(http.StatusOK, respSucc)

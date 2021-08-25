@@ -28,4 +28,6 @@ type Movie struct {
 	BoxOffice  string `json:"boxOffice"`
 	Production string `json:"production"`
 	Website    string `json:"website"`
+	Response   string `json:"response"`
+	Error      string `json:"error"`
 }
